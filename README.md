@@ -7,7 +7,7 @@
 |Matrícula | Aluno |
 | -- | -- |
 | 15/0142536  |  Murilo Schiler |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
+| 19/0098287  |  Pedro Bayma |
 
 ## Sobre 
 Sistema que busca representar uma maquina que vende latas de refrigerante.
