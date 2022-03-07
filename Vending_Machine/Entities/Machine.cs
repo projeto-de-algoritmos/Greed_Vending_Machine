@@ -16,12 +16,29 @@ namespace Vending_Machine.Entities
 
         public List<Sale> _HistoricSales{ get; private set; }
 
+        private Dictionary<string,double> _BankNotes{get;set;}
+
         public Machine()
         {
             _Display = new Display();
             _Purchase =new Purchase();
             _Iventory= new Inventory();
             _HistoricSales = new List<Sale>();
+            _BankNotes= new Dictionary<string, double>()
+            {
+                {"Hundred" , 100},
+                {"Fifty" , 50},
+                {"Twenty_Five" , 25},
+                {"Ten" , 10},
+                {"Five",5},
+                {"Two",2},
+                {"One",1},
+                {"Fifty_Cents" , 0.50},
+                {"Twenty_Five_Cents" , 0.25},
+                {"Ten_Cents" , 0.10},
+                {"Five_Cents",0.05},
+                {"One_Cent", 0.01}
+            };
         }
 
         public void Start(){
@@ -91,18 +108,38 @@ namespace Vending_Machine.Entities
                 this._Display.AmountLess(diferenceAmountSoda*-1);
                 return;
             }
-            if(diferenceAmountSoda == 0){
-                this._Iventory.ConfirmPurchase(sodaChoosen);
-                this.AddinHistoric(sodaChoosen,sodaValue);
-                this._Display.PurchaseOk();
+            if(diferenceAmountSoda == 0)
+            {
+                FinalizePurchase(sodaChoosen, sodaValue);
                 return;
             }
-                this._Iventory.ConfirmPurchase(sodaChoosen);
-                this.AddinHistoric(sodaChoosen,sodaValue);
-                this._Display.AmountOver(diferenceAmountSoda);
-                this._Display.PurchaseOk();
+            
+            var countBankNotes= this.BankNoteCount(diferenceAmountSoda);
+            this._Display.AmountOver(countBankNotes,this._BankNotes);        
+            FinalizePurchase(sodaChoosen, sodaValue);    
+
         }
-        
+
+        private void FinalizePurchase(string sodaChoosen, double sodaValue)
+        {
+            this._Iventory.ConfirmPurchase(sodaChoosen);
+            this.AddinHistoric(sodaChoosen, sodaValue);
+            this._Display.PurchaseOk();
+        }
+
+        private List<string> BankNoteCount(double diferenceAmountSoda)
+        {
+            
+            List<string> countBankNotes = new List<string>(); 
+            foreach (string bankNote in _BankNotes.Keys){
+
+                while(this._BankNotes[bankNote] <= diferenceAmountSoda){
+                    diferenceAmountSoda = diferenceAmountSoda -_BankNotes[bankNote];
+                    countBankNotes.Add(bankNote);
+                }
+            }
+            return countBankNotes;
+        }
 
         private void ShowHistoric()
         {

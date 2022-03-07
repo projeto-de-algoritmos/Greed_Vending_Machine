@@ -13,7 +13,7 @@ namespace Vending_Machine.Interfaces
         void ShowIventory(List<Inventory.Stored_Soda> iventory);
         void OutofStock();
         void AmountLess(double diference);
-        void AmountOver(double diference);
+        void AmountOver(List<string> countBankNotes,Dictionary<string, double> BankNotes);
         void PurchaseOk();
         void ShowHistoric(int totalSales, double totalAmount);
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Vending_Machine.Enums;
 using Vending_Machine.Interfaces;
 using static Vending_Machine.Entities.Inventory;
@@ -117,9 +118,13 @@ namespace Vending_Machine
             Console.WriteLine($"Por favor insira R${diference} para efetuar a compra");
         }
 
-        public void AmountOver(double diference)
+        public void AmountOver(List<string> countBankNotes,Dictionary<string, double> BankNotes)
         {
-            Console.WriteLine($"Retornando o troco de R${diference}");
+            foreach(string bankNote in BankNotes.Keys){
+                var total = countBankNotes.Where(cb => cb==bankNote).Count();
+                if(total>0)
+                    Console.WriteLine($"U$ {bankNote} : {total}");
+            }
         }
 
         public void PurchaseOk()
@@ -134,6 +139,3 @@ namespace Vending_Machine
         }
     }
 }
-
-
-
